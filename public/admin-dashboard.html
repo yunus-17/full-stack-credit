@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fa;
+      margin: 0;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    table {
+      width: 80%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background: white;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+    table th {
+      background: #3498db;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+    tr:hover {
+      background: #f1f1f1;
+    }
+
+    /* Mobile Admin Dashboard */
+    @media (max-width: 768px) {
+      header {
+        padding: 10px;
+      }
+      
+      header h1 {
+        font-size: 1.3rem;
+      }
+      
+      header p {
+        font-size: 0.9rem;
+      }
+      
+      table {
+        width: 95%;
+        margin: 20px auto;
+        font-size: 0.9rem;
+      }
+      
+      table th, table td {
+        padding: 8px 4px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 8px;
+      }
+      
+      header h1 {
+        font-size: 1.1rem;
+      }
+      
+      header p {
+        font-size: 0.8rem;
+      }
+      
+      table {
+        width: 98%;
+        margin: 15px auto;
+        font-size: 0.8rem;
+      }
+      
+      table th, table td {
+        padding: 6px 2px;
+      }
+      
+      /* Stack table columns on very small screens */
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      
+      tr {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+      }
+      
+      td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        text-align: left;
+      }
+      
+      td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #3498db;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+    <p>Registered Users &amp; Login Activity</p>
+  </header>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Date Registered</th>
+        <th>Last Login</th>
+      </tr>
+    </thead>
+    <tbody id="userData">
+      <!-- Data will be injected here -->
+    </tbody>
+  </table>
+
+  <script>
+    // Fetch users from API
+    async function fetchUsers() {
+      try {
+        // Get the current origin (protocol + host + port)
+        const baseUrl = window.location.origin;
+        const response = await fetch(`${baseUrl}/api/auth/users`);
+        const data = await response.json();
+        
+        if (data.users && data.users.length > 0) {
+          displayUsers(data.users);
+        } else {
+          displayNoUsers();
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        displayError();
+      }
+    }
+
+    function displayUsers(users) {
+      const tableBody = document.getElementById("userData");
+      
+      users.forEach(user => {
+        const registeredDate = user.registeredAt ? 
+          new Date(user.registeredAt).toLocaleDateString() : 'N/A';
+        const lastLoginDate = user.lastLogin ? 
+          new Date(user.lastLogin).toLocaleDateString() : 'Never';
+        
+        const row = `<tr>
+          <td data-label="Email">${user.email}</td>
+          <td data-label="Name">${user.name}</td>
+          <td data-label="Date Registered">${registeredDate}</td>
+          <td data-label="Last Login">${lastLoginDate}</td>
+        </tr>`;
+        tableBody.innerHTML += row;
+      });
+    }
+
+    function displayNoUsers() {
+      const tableBody = document.getElementById("userData");
+      tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: #666;">No users found</td></tr>`;
+    }
+
+    function displayError() {
+      const tableBody = document.getElementById("userData");
+      tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: #e74c3c;">Error loading users</td></tr>`;
+    }
+
+    // Load users when page loads
+    fetchUsers();
+  </script>
+</body>
+</html>

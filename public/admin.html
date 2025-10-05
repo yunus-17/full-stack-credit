@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      width: 350px;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    /* Mobile Admin Login */
+    @media (max-width: 768px) {
+      .login-container {
+        width: 90%;
+        padding: 25px;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+      
+      input {
+        padding: 10px;
+        margin: 8px 0;
+      }
+      
+      button {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        width: 95%;
+        padding: 20px;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      input {
+        padding: 8px;
+        margin: 6px 0;
+      }
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+    input:focus {
+      border-color: #3498db;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #3498db;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Admin Login</h2>
+    <form id="adminForm">
+      <input type="email" id="email" placeholder="Enter Email" required>
+      <input type="password" id="password" placeholder="Enter Password" required>
+      <button type="submit">Login</button>
+      <p class="error" id="errorMsg">Invalid credentials. Try again.</p>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('adminForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (email === "mohammedyunusa.23it@gmail.com" && password === "yunus123") {
+        window.location.href = "admin-dashboard.html";
+      } else {
+        errorMsg.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
