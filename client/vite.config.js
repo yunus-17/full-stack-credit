@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
   css: {
-    postcss: null
+    postcss: null,
   },
   server: {
     port: 5173,
@@ -18,6 +18,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist'
-  }
-})
+    outDir: 'dist',
+  },
+  base: process.env.VITE_BASE_PATH || '/one-credit',
+});
